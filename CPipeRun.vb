@@ -49,6 +49,11 @@ Public Class CPipeRun
         Dim propPipingClass As PropertyValueString
         Dim strPipingClass As String
 
+        Dim propInsulationPurpose As PropertyValueCodelist
+        Dim strInsulationPurpose As String
+
+        Dim propHeatTracingType As PropertyValueCodelist
+        Dim strHeatTracingType As String
 
         Try
 
@@ -83,7 +88,13 @@ Public Class CPipeRun
             propPipingClass = oEntity.GetPropertyValue("IJUAPipeNumbering", "PipingClass")
             strPipingClass = Trim(propPipingClass.PropValue)
 
-            strPipeRunName = strTrainNumber & strProcessSubUnit & strFluidCode & "-" & strLineNumber & "-" & strNpd & strNpdUnitType & "-" & strPipingClass & "-"
+            propInsulationPurpose = oEntity.GetPropertyValue("IJRteInsulation", "Purpose")
+            strInsulationPurpose = Trim(propInsulationPurpose.PropertyInfo.CodeListInfo.GetCodelistItem(propInsulationPurpose.PropValue).Name)
+
+            propHeatTracingType = oEntity.GetPropertyValue("IJHeatTracingInfo", "HeatTracingType")
+            strHeatTracingType = Trim(propHeatTracingType.PropertyInfo.CodeListInfo.GetCodelistItem(propHeatTracingType.PropValue).Name)
+
+            strPipeRunName = strTrainNumber & strProcessSubUnit & strFluidCode & "-" & strLineNumber & "-" & strNpd & strNpdUnitType & "-" & strPipingClass & "-" & strInsulationPurpose & strHeatTracingType
 
             oEntity.SetPropertyValue(strPipeRunName, "IJNamedItem", "Name")
 
