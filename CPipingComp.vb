@@ -1,28 +1,10 @@
 ﻿Option Explicit On
 Imports Ingr.SP3D.Common.Middle
 Imports Ingr.SP3D.Systems.Middle
-Imports System.IO
 Imports System.Collections.ObjectModel
 
 Public Class CPipingComp
     Inherits NameRuleBase
-
-    Public Sub WriteLog(Message As String)
-
-        Dim FileName As String = Path.GetTempPath() & "NameRule_PipingComp_Error.log"
-        Dim objStreamWriter As StreamWriter
-
-        If File.Exists(FileName) = False Then
-            objStreamWriter = File.CreateText(FileName)
-            objStreamWriter.Flush()
-            objStreamWriter.Close()
-        End If
-
-        objStreamWriter = File.AppendText(FileName)
-        objStreamWriter.WriteLine(DateTime.Now.ToShortDateString & " " & DateTime.Now.ToLongTimeString & " " & Message)
-        objStreamWriter.Close()
-
-    End Sub
 
     Public Overrides Sub ComputeName(oEntity As BusinessObject, oParents As ReadOnlyCollection(Of BusinessObject), oActiveEntity As BusinessObject)
 
@@ -66,7 +48,8 @@ Public Class CPipingComp
 
         Catch ex As Exception
 
-            WriteLog(ex.Message)
+            Dim Log As New Logging()
+            Log.WriteLog(ex.Message, "NameRule_PipingComp_Error.log")
 
         End Try
 
